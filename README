@@ -1,0 +1,30 @@
+sinatra-editable
+================
+
+A simple extension to edit mostly static partials. The extension adds a get and put to '/editable/*', and provides an editable() helper.
+
+For example:
+If you put to '/editable/about-us/bio' textile text in params[:content], the extension will
+write two files in in APP_ROOT/editable/about-us
+
+The extension will parse the textile and save in 'bio.html', saving the original text in 'bio.textile'.
+
+When you want to display the html, use the helper: editable("about-us/bio")
+
+A more useful README coming soon :)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
