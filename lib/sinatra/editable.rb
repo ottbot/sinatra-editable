@@ -5,14 +5,14 @@ module Sinatra
 
     module Helpers
       def editable(item)
-        path = "#{options.root}/#{options.editable_dir}/#{item.to_s}.html"
+        path = "#{settings.root}/#{settings.editable_dir}/#{item.to_s}.html"
         if editable_exist?(item)
           File.read(path)
         end
       end
 
       def editable_exist?(item)
-        path = "#{options.root}/#{options.editable_dir}/#{item.to_s}.html"
+        path = "#{settings.root}/#{settings.editable_dir}/#{item.to_s}.html"
         File.exist?(path)
       end
     end
@@ -25,7 +25,8 @@ module Sinatra
       app.set :editable_templater, :html
 
       app.get "/editable/*" do
-        path = "#{options.root}/#{options.editable_dir}/#{params[:splat].join('/')}.#{options.editable_templater}"
+      app.get "#{app.editable_route}/*" do
+        path = "#{settings.root}/#{settings.editable_dir}/#{params[:splat].join('/')}.#{settings.editable_templater}"
         if File.exist?(path)
           File.read(path)
         else
@@ -34,7 +35,8 @@ module Sinatra
       end
 
       app.put "/editable/*" do
-        case options.editable_templater
+      app.put "#{app.editable_route}/*" do
+        case settings.editable_templater
         when :textile
           new_template = params[:content]
           new_html = RedCloth.new(new_template).to_html
@@ -47,10 +49,10 @@ module Sinatra
        
         file_basename = params[:splat].pop.gsub(/\/$/,'')
         
-        dir = "#{options.root}/#{options.editable_dir}/#{params[:splat].join('/')}" 
+        dir = "#{settings.root}/#{settings.editable_dir}/#{params[:splat].join('/')}" 
         
         html_path = "#{dir}/#{file_basename}.html"
-        template_path = "#{dir}/#{file_basename}.#{options.editable_templater}"
+        template_path = "#{dir}/#{file_basename}.#{settings.editable_templater}"
         
         FileUtils.mkdir_p dir unless File.exist?(File.dirname(dir))
  
