@@ -24,7 +24,6 @@ module Sinatra
       app.set :editable_dir,       'editable'
       app.set :editable_templater, :html
 
-      app.get "/editable/*" do
       app.get "#{app.editable_route}/*" do
         path = "#{settings.root}/#{settings.editable_dir}/#{params[:splat].join('/')}.#{settings.editable_templater}"
         if File.exist?(path)
@@ -34,7 +33,6 @@ module Sinatra
         end
       end
 
-      app.put "/editable/*" do
       app.put "#{app.editable_route}/*" do
         case settings.editable_templater
         when :textile
