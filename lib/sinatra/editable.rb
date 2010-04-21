@@ -74,6 +74,3 @@ module Sinatra
 
   register Editable
 end
-
-
-# create settings for route prefix, make helper to needed JS, which must be generated or with the proper route
