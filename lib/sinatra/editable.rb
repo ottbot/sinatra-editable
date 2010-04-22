@@ -25,7 +25,7 @@ module Sinatra
       app.set :editable_templater, :html
 
       app.get "#{app.editable_route}/*" do
-        path = "#{settings.root}/#{settings.editable_dir}/#{params[:splat].join('/')}.#{settings.editable_templater}"
+        path = "#{settings.root}/#{settings.editable_dir}/#{params[:splat].shift}.#{settings.editable_templater}"
         if File.exist?(path)
           File.read(path)
         else
@@ -45,14 +45,15 @@ module Sinatra
           raise "Bad templater option"
         end
        
-        file_basename = params[:splat].pop.gsub(/\/$/,'')
-        
-        dir = "#{settings.root}/#{settings.editable_dir}/#{params[:splat].join('/')}" 
-        
+        splat = params[:splat].shift.split('/')
+        file_basename = splat.pop.gsub(/\/$/,'')
+                
+        dir = "#{settings.root}/#{settings.editable_dir}/#{splat.join('/')}" 
+
         html_path = "#{dir}/#{file_basename}.html"
         template_path = "#{dir}/#{file_basename}.#{settings.editable_templater}"
         
-        FileUtils.mkdir_p dir unless File.exist?(File.dirname(dir))
+        FileUtils.mkdir_p dir unless File.exist?(dir)
  
         if new_template
            File.open(template_path,'w') do |f|
