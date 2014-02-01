@@ -11,7 +11,6 @@ The extension will parse the textile and save in 'bio.html', saving the original
 
 When you want to display the html, use the helper: editable("about-us/bio")
 
-A more useful README coming soon :)
 
 
 
